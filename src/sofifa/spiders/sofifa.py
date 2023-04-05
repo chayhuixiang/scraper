@@ -9,14 +9,15 @@ class SofifaSpider(scrapy.Spider):
 
     teams_cache = dict()
 
-    def __init__(self, year="14", remap_columns="True"):
+    def __init__(self, year="14", remap_columns="True", offset="0"):
         self.year = year
+        self.offset = offset
         self.remap_columns = remap_columns.lower() in ("true", "yes", "y", "1")
         self.start_urls = [self.__build_request_url()]
         self.logger.info(f"Scraping year {YEAR_KEYS[year]}")
 
     def __build_request_url(self) -> str:
-        return f"{PLAYERS_BASE_URL}&r={YEAR_KEYS[self.year]}"
+        return f"{PLAYERS_BASE_URL}&r={YEAR_KEYS[self.year]}&offset={self.offset}"
 
     def start_requests(self):
         request = scrapy.Request(self.start_urls[0])
